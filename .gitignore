@@ -2,6 +2,7 @@
 node_modules
 /dist
 *.sqlite
+server/db/movie.sqlite
 
 # local env files
 .env.local
