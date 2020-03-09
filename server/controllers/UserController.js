@@ -60,7 +60,9 @@ module.exports = {
             const user = await User.destroy({
                 where: {
                     id: req.params.id
-                }
+                },
+                // 删除，而不是将deleteAt设置为当前时间戳（仅在paranoid启用时适用）
+                force: true
             })
             res.status(200).send({
                 message: '数据删除成功！'
