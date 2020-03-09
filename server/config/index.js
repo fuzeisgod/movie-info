@@ -8,7 +8,11 @@ module.exports = {
         options: {
             host: 'localhost',
             dialect: 'sqlite',
-            storage: path.resolve(__dirname, "../db/movie.sqlite")
+            storage: path.resolve(__dirname, "../db/movie.sqlite"),
+            define: {
+                underscored: true,
+                paranoid: true
+            }
         }
     }
 }

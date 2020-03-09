@@ -7,22 +7,10 @@ const app = express()
 app.use(bodyParser.json())
 app.use(morgan("combined"));
 
-app.get('/api', (req, res) => {
-    res.send({
-        msg: 'Hello node'
-    })
-})
-
-app.post('/users', (req, res) => {
-    console.log(req.body)
-    res.send({
-        code: 200,
-        date: req.body
-    })
-})
+require('./router')(app)
 
 sequelize
-    .authenticate()
+    .sync()
     .then(() => {
         console.log('Connection has been established successfully.');
     })
