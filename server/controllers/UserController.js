@@ -1,4 +1,6 @@
-const { User } = require('../models')
+const {
+    User
+} = require('../models')
 
 module.exports = {
     async register(req, res) {
@@ -7,8 +9,7 @@ module.exports = {
             res.status(201).send({
                 user
             })
-        }
-        catch (error) {
+        } catch (error) {
             res.status(400).send({
                 code: 400,
                 error: '该邮箱已经注册'
@@ -38,8 +39,7 @@ module.exports = {
     async update(req, res) {
         try {
             const user = await User.update(
-                req.body,
-                {
+                req.body, {
                     where: {
                         id: req.params.id
                     }
@@ -71,6 +71,26 @@ module.exports = {
             res.status(500).send({
                 code: 500,
                 error: '数据删除失败'
+            })
+        }
+    },
+    async login(req, res) {
+        try {
+            const user = await User.findOne({
+                where: {
+                    email: req.body.email
+                }
+            })
+            let isValidPassword = user.comparePassword(req.body.password)
+            if (isValidPassword) {
+                res.send({
+                    user: user.toJSON()
+                })
+            }
+        } catch (error) {
+            res.status(403).send({
+                code: 403,
+                error: '用户名或密码错误'
             })
         }
     }
