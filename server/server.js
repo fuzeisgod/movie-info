@@ -10,7 +10,7 @@ app.use(morgan("combined"));
 require('./router')(app)
 
 sequelize
-    .sync()
+    .sync({ force: true })
     .then(() => {
         console.log('Connection has been established successfully.');
     })
