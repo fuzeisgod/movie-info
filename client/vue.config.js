@@ -1,5 +1,5 @@
 module.exports = {
     devServer: {
-        proxy: 'http://locahost:4000/'
+        proxy: process.env.VUE_APP_REQUEST_PATH
     }
 }

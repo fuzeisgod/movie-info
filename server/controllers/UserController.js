@@ -1,13 +1,25 @@
 const {
     User
 } = require('../models')
+const config = require('../config')
+const Jwt = require('jsonwebtoken')
+
+// 设置 jwt token
+function tokenSign({ id, email }) {
+    try {
+        return Jwt.sign({ id, email }, config.token.secretOrPrivateKey, config.token.options)
+    } catch (error) {
+        throw (error)
+    }
+}
 
 module.exports = {
     async register(req, res) {
         try {
             const user = await User.create(req.body)
             res.status(201).send({
-                user
+                user,
+                token: tokenSign(user)
             })
         } catch (error) {
             res.status(400).send({
@@ -40,10 +52,10 @@ module.exports = {
         try {
             const user = await User.update(
                 req.body, {
-                    where: {
-                        id: req.params.id
-                    }
+                where: {
+                    id: req.params.id
                 }
+            }
             )
             res.status(200).send({
                 message: '数据更新成功！'
@@ -84,7 +96,8 @@ module.exports = {
             let isValidPassword = user.comparePassword(req.body.password)
             if (isValidPassword) {
                 res.send({
-                    user: user.toJSON()
+                    user: user.toJSON(),
+                    token: tokenSign(user)
                 })
             }
         } catch (error) {
