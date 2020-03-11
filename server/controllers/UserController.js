@@ -18,6 +18,7 @@ module.exports = {
         try {
             const user = await User.create(req.body)
             res.status(201).send({
+                code: 200,
                 user,
                 token: tokenSign(user)
             })
