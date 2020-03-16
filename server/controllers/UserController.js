@@ -29,6 +29,12 @@ module.exports = {
                 token: tokenSign(user)
             })
         } catch (error) {
+            let err = []
+            if (error.errors) {
+                error.errors.forEach(validateError => {
+                    err.push(validateError.message)
+                })
+            }
             res.status(400).send({
                 code: 400,
                 error: '该邮箱已经注册'
@@ -59,10 +65,10 @@ module.exports = {
         try {
             const user = await User.update(
                 req.body, {
-                    where: {
-                        id: req.params.id
-                    }
+                where: {
+                    id: req.params.id
                 }
+            }
             )
             res.status(200).send({
                 message: '数据更新成功！'
