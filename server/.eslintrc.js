@@ -14,5 +14,8 @@ module.exports = {
     ecmaVersion: 2018
   },
   rules: {
+    "space-before-function-paren": 0,
+    "semi": 0,
+    "no-unused-vars": 0
   }
 }

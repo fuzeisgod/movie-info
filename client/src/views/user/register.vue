@@ -11,10 +11,10 @@
         <el-input v-model="registerForm.email"></el-input>
       </el-form-item>
       <el-form-item prop="password" label="密码">
-        <el-input v-model="registerForm.password"></el-input>
+        <el-input type="password" v-model="registerForm.password"></el-input>
       </el-form-item>
       <el-form-item prop="comparePassword" label="确认密码">
-        <el-input v-model="registerForm.comparePassword"></el-input>
+        <el-input type="password" v-model="registerForm.comparePassword"></el-input>
       </el-form-item>
       <el-button
         type="primary"
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import UserService from '../../services/UserService'
+import UserService from "../../services/UserService";
 export default {
   data() {
     return {
@@ -74,11 +74,23 @@ export default {
   },
   methods: {
     register() {
-      this.$refs["registerForm"].validate(valid => {
-        console.log(valid);
+      // 验证数据合法性
+      this.$refs["registerForm"].validate(async valid => {
         if (valid) {
           this.loading = true;
-          // register api
+          try {
+            const response = await UserService.register({
+              email: this.registerForm.email,
+              password: this.registerForm.password
+            });
+            if (response.data.code === 200) {
+              // todo：将用户信息和token保存到vuex
+              this.$router.push("/");
+            }
+            this.loading = false;
+          } catch (error) {
+            console.loading(error);
+          }
         }
       });
     }

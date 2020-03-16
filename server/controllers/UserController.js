@@ -5,9 +5,15 @@ const config = require('../config')
 const Jwt = require('jsonwebtoken')
 
 // 设置 jwt token
-function tokenSign({ id, email }) {
+function tokenSign({
+    id,
+    email
+}) {
     try {
-        return Jwt.sign({ id, email }, config.token.secretOrPrivateKey, config.token.options)
+        return Jwt.sign({
+            id,
+            email
+        }, config.token.secretOrPrivateKey, config.token.options)
     } catch (error) {
         throw (error)
     }
@@ -53,10 +59,10 @@ module.exports = {
         try {
             const user = await User.update(
                 req.body, {
-                where: {
-                    id: req.params.id
+                    where: {
+                        id: req.params.id
+                    }
                 }
-            }
             )
             res.status(200).send({
                 message: '数据更新成功！'
@@ -97,8 +103,14 @@ module.exports = {
             let isValidPassword = user.comparePassword(req.body.password)
             if (isValidPassword) {
                 res.send({
+                    code: 200,
                     user: user.toJSON(),
                     token: tokenSign(user)
+                })
+            } else {
+                res.status(403).send({
+                    code: 403,
+                    error: '用户名或密码错误'
                 })
             }
         } catch (error) {
