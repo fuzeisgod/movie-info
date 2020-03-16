@@ -18,6 +18,8 @@ module.exports = {
     'space-before-function-paren': 0,
     'eol-last': 0,
     'key-spacing': 0,
-    'dot-notation': 0
+    'dot-notation': 0,
+    "indent": ["off", 2],
+    'space-in-parens': 0
   }
 }

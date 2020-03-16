@@ -16,6 +16,7 @@
       <el-form-item prop="comparePassword" label="确认密码">
         <el-input type="password" v-model="registerForm.comparePassword"></el-input>
       </el-form-item>
+      {{error}}
       <el-button
         type="primary"
         style="width:100%"
@@ -37,6 +38,7 @@ export default {
   data() {
     return {
       loading: false,
+      error: "",
       registerForm: {
         email: "",
         password: "",
@@ -84,12 +86,18 @@ export default {
               password: this.registerForm.password
             });
             if (response.data.code === 200) {
-              // todo：将用户信息和token保存到vuex
+              this.$store.dispatch("setToken", response.data.token);
+              this.$store.dispatch("setUser", response.data.user);
               this.$router.push("/");
             }
             this.loading = false;
           } catch (error) {
-            console.loading(error);
+            if (error.response.data.error) {
+              this.error = error.response.data.error;
+            } else {
+              this.error = "注册失败,请稍后重试";
+            }
+            this.loading = false;
           }
         }
       });

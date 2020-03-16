@@ -66,12 +66,14 @@ export default {
               password: this.loginForm.password
             });
             if (response.data.code === 200) {
-              // todo：将用户信息和token保存到vuex
+              this.$store.dispatch("setToken", response.data.token);
+              this.$store.dispatch("setUser", response.data.user);
               this.$router.push("/");
             }
             this.loading = false;
           } catch (error) {
             console.log(error);
+            this.loading = false;
           }
         }
       });

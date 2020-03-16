@@ -25,7 +25,10 @@ module.exports = {
             const user = await User.create(req.body)
             res.status(201).send({
                 code: 200,
-                user,
+                user: {
+                    email: user.email,
+                    id: user.id
+                },
                 token: tokenSign(user)
             })
         } catch (error) {
@@ -37,7 +40,7 @@ module.exports = {
             }
             res.status(400).send({
                 code: 400,
-                error: '该邮箱已经注册'
+                error: err.join('<br/>')
             })
         }
     },
@@ -65,10 +68,10 @@ module.exports = {
         try {
             const user = await User.update(
                 req.body, {
-                where: {
-                    id: req.params.id
+                    where: {
+                        id: req.params.id
+                    }
                 }
-            }
             )
             res.status(200).send({
                 message: '数据更新成功！'
@@ -110,7 +113,10 @@ module.exports = {
             if (isValidPassword) {
                 res.send({
                     code: 200,
-                    user: user.toJSON(),
+                    user: {
+                        email: user.email,
+                        id: user.id
+                    },
                     token: tokenSign(user)
                 })
             } else {
